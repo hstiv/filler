@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filler.h                                           :+:      :+:    :+:   */
+/*   t_fil.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hstiv <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLER_H
-# define FILLER_R
+#include "filler.h"
 
-#include "libft.h"
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/uio.h>
-
-# define BUFF_SIZE 3
-
-typedef struct	s_fil
+t_fil           *t_fil_new(void)
 {
-    int			data;
-	char		**map;
-	char		**fig;
-}				t_fil;
+    t_fil       *fill;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+    fill = malloc(sizeof(t_fil*) * 1);
+    if (fill)
+    {
+        fill->data = 0;
+        fill->map = NULL;
+        fill->fig = 0;
+    }
+    return (fill);
+}
