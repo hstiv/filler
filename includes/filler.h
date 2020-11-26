@@ -20,13 +20,15 @@
 
 # define BUFF_SIZE 3
 
-typedef struct	s_fil
+typedef struct	s_map
 {
-    int			data;
 	char		**map;
 	char		**fig;
-}				t_fil;
+	int 		is_first_round;
+}				t_map;
 
 int					get_next_line(const int fd, char **line);
+void 				set_data(t_map *data);
+
 
 #endif
