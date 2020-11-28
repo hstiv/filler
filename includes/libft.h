@@ -16,6 +16,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# define BUFF_SIZE 3
 
 typedef struct		s_list
 {
@@ -88,5 +89,6 @@ int					ft_isascii(int c);
 int					ft_isprint(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
+int					get_next_line(const int fd, char **line);
 
 #endif

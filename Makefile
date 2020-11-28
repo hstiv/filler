@@ -2,7 +2,7 @@ NAME = hstiv.filler
 
 LFT = libft/libft.a
 
-SRC = src/get_next_line.c src/t_fil.c src/ $(LFT)
+SRC = src/main.c src/reader.c src/utils.c src/algo.c $(LFT)
 
 HEAD = includes/
 
