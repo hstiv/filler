@@ -4,20 +4,24 @@
 
 #include "filler.h"
 
-static void 		read_player(t_data *data)
+int 				read_player(t_data *data)
 {
 	char 			*c;
+	int				ret;
 
-	while (get_next_line(0, &data->line) && data->line != NULL)
+	ret = 0;
+	if (get_next_line(0, &data->line) != 0)
 	{
-		if (ft_strstr(data->line, "hstiv") && ft_strstr(data->line, "exec"))
+		if (ft_strstr(data->line, "hstiv.filler") && ft_strstr(data->line, "exec"))
 		{
 			c = ft_strchr(data->line, 'p') + 1;
-			data->player = (*c == '1') ? 'O' : 'X';
+			data->player = (*c == '1') ? 'o' : 'x';
+			data->enemy = (data->player == 'o') ? 'x' : 'o';
+			ret = 1;
 		}
 		free(data->line);
 	}
-	data->is_first_round = 0;
+	return (ret);
 }
 
 static void 		read_figure(t_data *data)
@@ -25,6 +29,8 @@ static void 		read_figure(t_data *data)
 	char 			**s;
 	int				len;
 
+	if (get_next_line(0, &data->line) == 1)
+		exit(-1);
 	s = ft_strsplit(data->line, ' ');
 	free(data->line);
 	len = ft_atoi(s[1]);
@@ -46,6 +52,8 @@ static void 		create_map(t_data *data)
 	int 			x;
 	int 			y;
 
+	if (get_next_line(0, &data->line) == 1)
+		exit(-1);
 	i = 0;
 	s = ft_strsplit(data->line, ' ');
 	free(data->line);
@@ -64,18 +72,19 @@ static void 		read_map(t_data *data)
 	char			**s;
 	int 			x;
 
-	while (get_next_line(0, &data->line) && !ft_strstr(data->line, "Plateau") && data->line != NULL)
-		free(data->line);
 	data->map == NULL ? create_map(data) : 0;
-	get_next_line(0, &data->line);
-	free(data->line);
-	while(get_next_line(0, &data->line) && data->line != NULL)
+	while (get_next_line(0, &data->line) != 1)
 	{
-		if (ft_strstr(data->line, "Piece"))
-			return ;
+		if ((s = ft_strsplit(data->line, ' '))[1] == NULL)
+		{
+			ft_arraydel(s);
+			free(s);
+			free(data->line);
+			continue ;
+		}
 		s = ft_strsplit(data->line, ' ');
 		x = ft_atoi(s[0]);
-		data->map[x] = ft_strcpy(data->map[x], s[1]);
+		data->map[x] = ft_strcpymap(data->map[x], s[1], ft_tolower);
 		ft_arraydel((void **)s);
 		free(s);
 		free(data->line);
@@ -85,10 +94,7 @@ static void 		read_map(t_data *data)
 
 int 				read_board(t_data *data)
 {
-	if (data->is_first_round)
-		read_player(data);
 	read_map(data);
-	if (data->line != NULL)
-		read_figure(data);
+	read_figure(data);
 	return (1);
 }
