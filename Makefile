@@ -2,7 +2,7 @@ NAME = hstiv.filler
 
 LFT = libft/libft.a
 
-SRC = src/main.c src/reader.c src/utils.c src/algo.c $(LFT)
+SRC = src/main.c src/reader.c src/utils.c src/algo.c src/heatmap.c $(LFT)
 
 HEAD = includes/
 

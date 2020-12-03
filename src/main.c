@@ -1,23 +1,30 @@
-//
-// Created by Hallie Stiv on 11/26/20.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hstiv <satmak335@gmail.com>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 18:48:28 by hstiv             #+#    #+#             */
+/*   Updated: 2020/12/03 18:48:30 by hstiv            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
-#include "stdio.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 int 				main(void)
 {
 	t_data			data;
-	char			*line;
 
 	set_data(&data);
 	if (!read_player(&data))
 		exit(-1);
 	while (read_board(&data))
 	{
-		
+		init_heatmap(&data);
+		handle_heatmap(&data);
+		init_coordinates(&data);
+		reload_data(&data);
 	}
 	return (0);
 }

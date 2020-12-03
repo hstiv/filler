@@ -1,6 +1,14 @@
-//
-// Created by Hallie Stiv on 11/26/20.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hstiv <satmak335@gmail.com>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/03 18:48:40 by hstiv             #+#    #+#             */
+/*   Updated: 2020/12/03 18:48:42 by hstiv            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "filler.h"
 
@@ -28,20 +36,23 @@ static void 		read_figure(t_data *data)
 {
 	char 			**s;
 	int				len;
+	int 			i;
 
-	if (get_next_line(0, &data->line) == 1)
-		exit(-1);
+	get_next_line(0, &data->line);
 	s = ft_strsplit(data->line, ' ');
 	free(data->line);
 	len = ft_atoi(s[1]);
-	data->fig = (char **)malloc(sizeof(char *) * len);
+	data->fig = (char **)malloc(sizeof(char *) * len + 1);
 	ft_arraydel((void **)s);
 	free(s);
-	while (len--)
+	data->fig[len] = NULL;
+	i = 0;
+	while (i < len)
 	{
 		get_next_line(0, &data->line);
-		data->fig[len] = ft_strcpy(data->fig[len], data->line);
+		data->fig[i] = ft_strdup(data->line);
 		free(data->line);
+		i++;
 	}
 }
 
@@ -49,46 +60,51 @@ static void 		create_map(t_data *data)
 {
 	char 			**s;
 	int				i;
-	int 			x;
-	int 			y;
 
-	if (get_next_line(0, &data->line) == 1)
-		exit(-1);
+	get_next_line(0, &data->line);
 	i = 0;
 	s = ft_strsplit(data->line, ' ');
 	free(data->line);
-	x = ft_atoi(s[1]);
-	y = ft_atoi(s[2]);
+	data->x = ft_atoi(s[1]);
+	data->y = ft_atoi(s[2]);
 	ft_arraydel((void **)s);
 	free(s);
-	data->map = (char **)malloc(sizeof(char *) * x);
-	while (i < x)
-		data->map[i++] = (char *)malloc(sizeof(char *) * y);
-	data->map[x] = NULL;
+	data->map = (char **)malloc(sizeof(char *) * data->x + 1);
+	data->hmap = (int **)malloc(sizeof(int *) * data->x + 1);
+	while (i < data->x)
+	{
+		data->hmap[i] = (int *)malloc(sizeof(int) * data->y);
+		data->map[i++] = (char *)malloc(sizeof(char) * data->y);
+	}
+	data->map[i] = NULL;
 }
 
 static void 		read_map(t_data *data)
 {
 	char			**s;
-	int 			x;
+	int 			i;
 
-	data->map == NULL ? create_map(data) : 0;
-	while (get_next_line(0, &data->line) != 1)
+	if (data->map == NULL)
+		create_map(data);
+	else
 	{
-		if ((s = ft_strsplit(data->line, ' '))[1] == NULL)
-		{
-			ft_arraydel(s);
-			free(s);
-			free(data->line);
-			continue ;
-		}
+		get_next_line(0, &data->line);
+		free(data->line);
+	}
+	i = 0;
+	get_next_line(0, &data->line);
+	free(data->line);
+	while (i < data->x && get_next_line(0, &data->line) >= 0)
+	{
 		s = ft_strsplit(data->line, ' ');
-		x = ft_atoi(s[0]);
-		data->map[x] = ft_strcpymap(data->map[x], s[1], ft_tolower);
+		if (i != ft_atoi(s[0]))
+			exit(-1);
+		data->map[i] = ft_strcpylower(data->map[i], s[1]);
 		ft_arraydel((void **)s);
 		free(s);
 		free(data->line);
 		data->line = NULL;
+		i++;
 	}
 }
 

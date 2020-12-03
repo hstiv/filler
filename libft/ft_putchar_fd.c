@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwuckert <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hstiv <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 22:16:08 by mwuckert          #+#    #+#             */
 /*   Updated: 2018/12/19 20:42:15 by hstiv            ###   ########.fr       */
