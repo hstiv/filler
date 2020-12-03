@@ -22,6 +22,7 @@ void 				set_data(t_data *data)
 	data->y = 0;
 	data->coor[0] = 0;
 	data->coor[1] = 0;
+	data->coor[2] = 0;
 	data->hmap = NULL;
 	data->enemy = 'x';
 }
@@ -66,7 +67,8 @@ void 				reload_data(t_data *data)
 	free(data->fig);
 	data->fig = NULL;
 	data->coor[0] = 0;
-	data->coor[0] = 0;
+	data->coor[1] = 0;
+	data->coor[2] = 0;
 	data->line = NULL;
 }
 

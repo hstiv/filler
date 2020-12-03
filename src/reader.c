@@ -18,7 +18,7 @@ int 				read_player(t_data *data)
 	int				ret;
 
 	ret = 0;
-	if (get_next_line(0, &data->line) != 0)
+	if (get_next_line(0, &data->line))
 	{
 		if (ft_strstr(data->line, "hstiv.filler") && ft_strstr(data->line, "exec"))
 		{
@@ -86,17 +86,18 @@ static void 		read_map(t_data *data)
 
 	if (data->map == NULL)
 		create_map(data);
-	else
-	{
-		get_next_line(0, &data->line);
-		free(data->line);
-	}
 	i = 0;
-	get_next_line(0, &data->line);
-	free(data->line);
-	while (i < data->x && get_next_line(0, &data->line) >= 0)
+	while (i < data->x && get_next_line(0, &data->line) != 1)
 	{
 		s = ft_strsplit(data->line, ' ');
+		if (ft_strlen2(s) != 2)
+		{
+			ft_arraydel((void **)s);
+			ft_arraydel((void **)data->line);
+			free(s);
+			free(data->line);
+			continue;
+		}
 		if (i != ft_atoi(s[0]))
 			exit(-1);
 		data->map[i] = ft_strcpylower(data->map[i], s[1]);
