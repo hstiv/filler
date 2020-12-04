@@ -21,19 +21,19 @@ static void 	reload_coor(t_data *data, int x, int y)
 	curr[0] = x;
 	curr[1] = y;
 	curr[2] = 0;
-	fig_h = ft_strlen2(data->fig) + x;
-	fig_w = ft_strlen(data->fig[0]) + y;
-	while (x < fig_h)
+	fig_h = 0;
+	while (fig_h < data->fsize[0])
 	{
-		y = fig_w - ft_strlen(data->fig[0]);
-		while (y < fig_w)
+		fig_w = 0;
+		while (fig_w < data->fsize[1])
 		{
-			curr[2] += data->hmap[x][y];
-			y++;
+			if (data->fig[fig_h][fig_w] == '*')
+				curr[2] += data->hmap[x + fig_h][y + fig_w];
+			fig_w++;
 		}
-		x++;
+		fig_h++;
 	}
-	if (curr[2] <= data->coor[2])
+	if (curr[2] <= data->coor[2] || data->coor[2] == 0)
 	{
 		data->coor[0] = curr[0];
 		data->coor[1] = curr[1];
@@ -47,25 +47,25 @@ static int 		check_fig_place(t_data *data, int x, int y)
 	int 		fig_w;
 	int 		block_count;
 
-	fig_h = ft_strlen2(data->fig) + x;
 	block_count = 0;
-	fig_w = ft_strlen(data->fig[0]) + y;
-	if (fig_h > data->x || fig_w > data->y)
+	fig_h = 0;
+	if (x + data->fsize[0] > data->msize[0] ||
+		y + data->fsize[1] > data->msize[1])
 		return (0);
-	while (x < fig_h)
+	while (fig_h < data->fsize[0])
 	{
-		y = fig_w - ft_strlen(data->fig[0]);
-		while (y < fig_w)
+		fig_w = 0;
+		while (fig_w < data->fsize[1])
 		{
-			if (data->hmap[x][y] == ME)
+			if (data->hmap[x + fig_h][y + fig_w] == ME && data->fig[fig_h][fig_w] == '*')
 				block_count++;
-			if (data->hmap[x][y] == EN || block_count > 1)
+			if ((data->hmap[x + fig_h][y + fig_w] == EN && data->fig[fig_h][fig_w] == '*') || block_count > 1)
 				return (0);
-			y++;
+			fig_w++;
 		}
-		x++;
+		fig_h++;
 	}
-	return (1);
+	return (block_count);
 }
 
 void 			init_coordinates(t_data *data)
@@ -74,10 +74,10 @@ void 			init_coordinates(t_data *data)
 	int 		y;
 
 	x = 0;
-	while (x < data->x)
+	while (x < (data->msize[0]))
 	{
 		y = 0;
-		while (y < data->y)
+		while (y < data->msize[1])
 		{
 			if (check_fig_place(data, x, y))
 				reload_coor(data, x, y);

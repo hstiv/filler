@@ -31,8 +31,8 @@ typedef struct	s_data
 	char		**fig;
 	char		player;
 	char		enemy;
-	int 		x;
-	int 		y;
+	int 		msize[2];
+	int 		fsize[2];
 	int			coor[3];
 }				t_data;
 
@@ -45,5 +45,6 @@ void			init_coordinates(t_data *data);
 void			handle_heatmap(t_data *data);
 int 			ft_strlen2(char **s);
 void 			reload_data(t_data *data);
+void 			throw(char *s);
 
 #endif

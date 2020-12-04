@@ -17,11 +17,11 @@ static void			put_heap(t_data *data, int x, int y, int i)
 	int 			**hmap;
 
 	hmap = data->hmap;
-	if (x + 1 < data->x && y + 1 < data->y && hmap[x + 1][y + 1] == i)
+	if (x + 1 < data->msize[0] && y + 1 < data->msize[1] && hmap[x + 1][y + 1] == i)
 		hmap[x][y] = i + 1;
-	else if (x + 1 < data->x && hmap[x + 1][y] == i)
+	else if (x + 1 < data->msize[0] && hmap[x + 1][y] == i)
 		hmap[x][y] = i + 1;
-	else if (x + 1 < data->x && y - 1 >= 0 && hmap[x + 1][y - 1] == i)
+	else if (x + 1 < data->msize[0] && y - 1 >= 0 && hmap[x + 1][y - 1] == i)
 		hmap[x][y] = i + 1;
 	else if (y - 1 >= 0 && hmap[x][y - 1] == i)
 		hmap[x][y] = i + 1;
@@ -29,9 +29,9 @@ static void			put_heap(t_data *data, int x, int y, int i)
 		hmap[x][y] = i + 1;
 	else if (x - 1 >= 0 && hmap[x - 1][y] == i)
 		hmap[x][y] = i + 1;
-	else if (x - 1 >= 0 && y + 1 < data->y && hmap[x - 1][y + 1] == i)
+	else if (x - 1 >= 0 && y + 1 < data->msize[1] && hmap[x - 1][y + 1] == i)
 		hmap[x][y] = i + 1;
-	else if (y + 1 < data->y && hmap[x][y + 1] == i)
+	else if (y + 1 < data->msize[1] && hmap[x][y + 1] == i)
 		hmap[x][y] = i + 1;
 }
 
@@ -42,13 +42,13 @@ void 				handle_heatmap(t_data *data)
 	int 			i;
 
 	i = 1;
-	while (i < data->x)
+	while (i < (data->msize[0] >= data->msize[1] ? data->msize[0] : data->msize[1]))
 	{
 		x = 0;
-		while (x < data->x)
+		while (x < data->msize[0])
 		{
 			y = 0;
-			while (y < data->y)
+			while (y < data->msize[1])
 			{
 				if (data->hmap[x][y] == 0)
 					put_heap(data, x, y, i);
@@ -62,11 +62,11 @@ void 				handle_heatmap(t_data *data)
 
 static void			near_the_enemy(t_data *data, int x, int y)
 {
-	if (x + 1 < data->x && y + 1 < data->y && data->hmap[x + 1][y + 1] == 0)
+	if (x + 1 < data->msize[0] && y + 1 < data->msize[1] && data->hmap[x + 1][y + 1] == 0)
 		data->hmap[x + 1][y + 1] = 1;
-	if (x + 1 < data->x && data->hmap[x + 1][y] == 0)
+	if (x + 1 < data->msize[0] && data->hmap[x + 1][y] == 0)
 		data->hmap[x + 1][y] = 1;
-	if (x + 1 < data->x && y - 1 >= 0 && data->hmap[x + 1][y - 1] == 0)
+	if (x + 1 < data->msize[0] && y - 1 >= 0 && data->hmap[x + 1][y - 1] == 0)
 		data->hmap[x + 1][y - 1] = 1;
 	if (y - 1 >= 0 && data->hmap[x][y - 1] == 0)
 		data->hmap[x][y - 1] = 1;
@@ -74,9 +74,9 @@ static void			near_the_enemy(t_data *data, int x, int y)
 		data->hmap[x - 1][y - 1] = 1;
 	if (x - 1 >= 0 && data->hmap[x - 1][y] == 0)
 		data->hmap[x - 1][y] = 1;
-	if (x - 1 >= 0 && y + 1 < data->y && data->hmap[x - 1][y + 1] == 0)
+	if (x - 1 >= 0 && y + 1 < data->msize[1] && data->hmap[x - 1][y + 1] == 0)
 		data->hmap[x - 1][y + 1] = 1;
-	if (y + 1 < data->y && data->hmap[x][y + 1] == 0)
+	if (y + 1 < data->msize[1] && data->hmap[x][y + 1] == 0)
 		data->hmap[x][y + 1] = 1;
 }
 
@@ -88,10 +88,10 @@ void 				init_heatmap(t_data *data)
 
 	i = 0;
 	map = data->map;
-	while (i < data->x)
+	while (i < data->msize[0])
 	{
 		j = 0;
-		while (j < data->y)
+		while (j < data->msize[1])
 		{
 			if (map[i][j] == '.')
 				data->hmap[i][j] = 0;

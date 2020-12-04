@@ -18,7 +18,7 @@ int 				read_player(t_data *data)
 	int				ret;
 
 	ret = 0;
-	if (get_next_line(0, &data->line))
+	if (get_next_line(0, &data->line) != 0)
 	{
 		if (ft_strstr(data->line, "hstiv.filler") && ft_strstr(data->line, "exec"))
 		{
@@ -27,7 +27,7 @@ int 				read_player(t_data *data)
 			data->enemy = (data->player == 'o') ? 'x' : 'o';
 			ret = 1;
 		}
-		free(data->line);
+		ft_memdel((void **)&data->line);
 	}
 	return (ret);
 }
@@ -35,25 +35,25 @@ int 				read_player(t_data *data)
 static void 		read_figure(t_data *data)
 {
 	char 			**s;
-	int				len;
 	int 			i;
 
 	get_next_line(0, &data->line);
 	s = ft_strsplit(data->line, ' ');
-	free(data->line);
-	len = ft_atoi(s[1]);
-	data->fig = (char **)malloc(sizeof(char *) * len + 1);
+	ft_memdel((void **)&data->line);
+	data->fsize[0] = ft_atoi(s[1]);
+	data->fsize[1] = ft_atoi(s[2]);
+	data->fig = (char **)malloc(sizeof(char *) * data->fsize[0] + 1);
 	ft_arraydel((void **)s);
 	free(s);
-	data->fig[len] = NULL;
 	i = 0;
-	while (i < len)
+	while (i < data->fsize[0])
 	{
 		get_next_line(0, &data->line);
 		data->fig[i] = ft_strdup(data->line);
-		free(data->line);
+		ft_memdel((void **)&data->line);
 		i++;
 	}
+	data->fig[i] = NULL;
 }
 
 static void 		create_map(t_data *data)
@@ -62,19 +62,20 @@ static void 		create_map(t_data *data)
 	int				i;
 
 	get_next_line(0, &data->line);
-	i = 0;
 	s = ft_strsplit(data->line, ' ');
-	free(data->line);
-	data->x = ft_atoi(s[1]);
-	data->y = ft_atoi(s[2]);
+	ft_memdel((void **)&data->line);
+	data->msize[0] = ft_atoi(s[1]);
+	data->msize[1] = ft_atoi(s[2]);
 	ft_arraydel((void **)s);
 	free(s);
-	data->map = (char **)malloc(sizeof(char *) * data->x + 1);
-	data->hmap = (int **)malloc(sizeof(int *) * data->x + 1);
-	while (i < data->x)
+	data->map = (char **)malloc(sizeof(char *) * data->msize[0] + 1);
+	data->hmap = (int **)malloc(sizeof(int *) * data->msize[0] + 1);
+	i = 0;
+	while (i < data->msize[0])
 	{
-		data->hmap[i] = (int *)malloc(sizeof(int) * data->y);
-		data->map[i++] = (char *)malloc(sizeof(char) * data->y);
+		data->hmap[i] = (int *)malloc(sizeof(int) * data->msize[1]);
+		data->map[i] = (char *)malloc(sizeof(char) * data->msize[1]);
+		i++;
 	}
 	data->map[i] = NULL;
 }
@@ -87,24 +88,22 @@ static void 		read_map(t_data *data)
 	if (data->map == NULL)
 		create_map(data);
 	i = 0;
-	while (i < data->x && get_next_line(0, &data->line) != 1)
+	while (i < data->msize[0] && get_next_line(0, &data->line))
 	{
 		s = ft_strsplit(data->line, ' ');
 		if (ft_strlen2(s) != 2)
 		{
 			ft_arraydel((void **)s);
-			ft_arraydel((void **)data->line);
 			free(s);
-			free(data->line);
+			ft_memdel((void **)&data->line);
 			continue;
 		}
 		if (i != ft_atoi(s[0]))
-			exit(-1);
+			throw("BAD_EXCESS\n");
 		data->map[i] = ft_strcpylower(data->map[i], s[1]);
 		ft_arraydel((void **)s);
 		free(s);
-		free(data->line);
-		data->line = NULL;
+		ft_memdel((void **)&data->line);
 		i++;
 	}
 }

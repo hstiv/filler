@@ -18,37 +18,15 @@ void 				set_data(t_data *data)
 	data->map = NULL;
 	data->fig = NULL;
 	data->line = NULL;
-	data->x = 0;
-	data->y = 0;
-	data->coor[0] = 0;
-	data->coor[1] = 0;
+	data->fsize[0] = 0;
+	data->fsize[1] = 0;
+	data->msize[0] = 0;
+	data->msize[1] = 0;
+	data->coor[0] = -1;
+	data->coor[1] = -1;
 	data->coor[2] = 0;
 	data->hmap = NULL;
 	data->enemy = 'x';
-}
-
-int 				players_border(t_data *data, int x, int y)
-{
-	int 			**hmap;
-
-	hmap = data->hmap;
-	if (x + 1 < data->x && y + 1 < data->y && hmap[x + 1][y + 1] != ME)
-		return (1);
-	else if (x + 1 < data->x && hmap[x + 1][y] != ME)
-		return (1);
-	else if (x + 1 < data->x && y - 1 >= 0 && hmap[x + 1][y - 1] != ME)
-		return (1);
-	else if (y - 1 >= 0 && hmap[x][y - 1] != ME)
-		return (1);
-	else if (x - 1 >= 0 && y - 1 >= 0 && hmap[x - 1][y - 1] != ME)
-		return (1);
-	else if (x - 1 >= 0 && hmap[x - 1][y] != ME)
-		return (1);
-	else if (x - 1 >= 0 && y + 1 < data->y && hmap[x - 1][y + 1] != ME)
-		return (1);
-	else if (y + 1 < data->y && hmap[x][y + 1] != ME)
-		return (1);
-	return (0);
 }
 
 int 				ft_strlen2(char **s)
@@ -66,10 +44,19 @@ void 				reload_data(t_data *data)
 	ft_arraydel((void **)data->fig);
 	free(data->fig);
 	data->fig = NULL;
-	data->coor[0] = 0;
-	data->coor[1] = 0;
+	data->coor[0] = -1;
+	data->coor[1] = -1;
 	data->coor[2] = 0;
+	data->fsize[0] = 0;
+	data->fsize[1] = 0;
 	data->line = NULL;
+}
+
+void 				throw(char *s)
+{
+	write(1, "hstiv.filler: ", 14);
+	perror(s);
+	exit(EXIT_FAILURE);
 }
 
 char				*ft_strcpylower(char *dst, char const *src)
