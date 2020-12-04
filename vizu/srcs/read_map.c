@@ -3,3 +3,7 @@
 //
 #include "vizu.h"
 
+int 					read_map(t_mlx *mlx)
+{
+
+}

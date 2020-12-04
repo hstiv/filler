@@ -1,4 +1,4 @@
-include "vizu.h"
+#include "vizu.h"
 
 int				expose_hook(void *param)
 {
@@ -20,6 +20,7 @@ int 				main(void)
 {
 	t_mlx			mlx;
 
+	init_param(&mlx);
 	mlx.ptr = mlx_init();
 	mlx.img = mlx_new_image(mlx.ptr, WIDTH, HEIGHT);
 	mlx.wind = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, WIND);

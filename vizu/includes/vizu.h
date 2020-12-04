@@ -5,7 +5,6 @@
 # include <stdio.h>
 # include <mlx.h>
 # include <math.h>
-# include <pthread.h>
 
 # define HEIGHT		720
 # define WIDTH		1000
@@ -17,6 +16,7 @@
 # define PINK		16715426
 # define W4			WIDTH - 300
 # define THRD		8
+# define WIND		"fract'ol"
 
 typedef struct	s_mlx
 {
@@ -28,8 +28,14 @@ typedef struct	s_mlx
 	int			size_line;
 	int			endian;
 	char 		**map;
+	char 		*players[2];
+	int 		msize[2];
+	int 		fsize[2];
+
 }				t_mlx;
 
 int				expose_hook(void *param);
 int				draw_map(t_mlx *mlx);
 void			read_map(t_mlx *mlx);
+
+#endif

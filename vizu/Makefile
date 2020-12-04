@@ -2,7 +2,7 @@ NAME		=	vizu
 
 INC			=	includes/
 
-SRC_NAME	=	main.c read_map.c draw_map.c
+SRC_NAME	=	main.c read_map.c draw_map.c definers.c
 
 SRC_PATH	=	srcs/
 
@@ -16,7 +16,9 @@ INC_PATH	=	includes/
 
 LIB_NAME	=	libft.a
 
-LIB_PATH	=	../libft/includes/
+LIB_PATH	=	../libft/
+
+LIB_INC_PATH =	../includes/
 
 LIB_INC_NAME=	libft.h
 
@@ -29,12 +31,10 @@ INC				=	$(addprefix $(INC_PATH), $(INC_NAME))
 .PHONY:				all $(LIB_NAME) clean fclean re
 
 
-all: 				$(LIB_NAME) $(NAME)
+all: 				$(NAME)
 
-$(LIB_NAME):
-						@make -C $(LIB_PATH)
 
-$(NAME):			$(LIB) $(OBJ)
+$(NAME):			$(OBJ)
 						@gcc -Wall -Wextra -Werror -lpthread $(OBJ) \
 						-lmlx -framework OpenGL -framework AppKit -lm \
 						-L $(LIB_PATH) -lft -o $(NAME)
