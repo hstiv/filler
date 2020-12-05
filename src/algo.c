@@ -25,7 +25,7 @@ static void 	reload_coor(t_data *data, int x, int y)
 		fig_w = 0;
 		while (fig_w < data->fsize[1])
 		{
-			if (data->fig[fig_h][fig_w] == '*' && data->hmap[x + fig_h][y + fig_w] != ME)
+			if (data->fig[fig_h][fig_w] == '*')
 				val += data->hmap[x + fig_h][y + fig_w];
 			fig_w++;
 		}
@@ -71,10 +71,10 @@ void 			init_coordinates(t_data *data)
 	int 		y;
 
 	x = 0;
-	while (x < data->msize[0])
+	while (x + data->fsize[0] < data->msize[0])
 	{
 		y = 0;
-		while (y < data->msize[1])
+		while (y + data->fsize[1] < data->msize[1])
 		{
 			if (check_fig_place(data, x, y))
 				reload_coor(data, x, y);
