@@ -32,7 +32,7 @@ int 				read_player(t_data *data)
 	return (ret);
 }
 
-static void 		read_figure(t_data *data)
+static int			read_figure(t_data *data)
 {
 	char 			**s;
 	int 			i;
@@ -54,6 +54,9 @@ static void 		read_figure(t_data *data)
 		i++;
 	}
 	data->fig[i] = NULL;
+	if (i != data->fsize[0])
+		return (0);
+	return (1);
 }
 
 static void 		create_map(t_data *data)
@@ -80,7 +83,7 @@ static void 		create_map(t_data *data)
 	data->map[i] = NULL;
 }
 
-static void 		read_map(t_data *data)
+static int			read_map(t_data *data)
 {
 	char			**s;
 	int 			i;
@@ -88,8 +91,9 @@ static void 		read_map(t_data *data)
 	if (data->map == NULL)
 		create_map(data);
 	i = 0;
-	while (i < data->msize[0] && get_next_line(0, &data->line))
+	while (i < data->msize[0])
 	{
+		get_next_line(0, &data->line);
 		s = ft_strsplit(data->line, ' ');
 		if (ft_strlen2(s) != 2)
 		{
@@ -106,11 +110,14 @@ static void 		read_map(t_data *data)
 		ft_memdel((void **)&data->line);
 		i++;
 	}
+	if (i != data->msize[0])
+		return (0);
+	return (1);
 }
 
 int 				read_board(t_data *data)
 {
-	read_map(data);
-	read_figure(data);
+	if (!read_map(data) || !read_figure(data))
+		return (0);
 	return (1);
 }

@@ -16,28 +16,26 @@ static void 	reload_coor(t_data *data, int x, int y)
 {
 	int 		fig_h;
 	int 		fig_w;
-	int 		curr[3];
+	int 		val;
 
-	curr[0] = x;
-	curr[1] = y;
-	curr[2] = 0;
+	val = 0;
 	fig_h = 0;
 	while (fig_h < data->fsize[0])
 	{
 		fig_w = 0;
 		while (fig_w < data->fsize[1])
 		{
-			if (data->fig[fig_h][fig_w] == '*')
-				curr[2] += data->hmap[x + fig_h][y + fig_w];
+			if (data->fig[fig_h][fig_w] == '*' && data->hmap[x + fig_h][y + fig_w] != ME)
+				val += data->hmap[x + fig_h][y + fig_w];
 			fig_w++;
 		}
 		fig_h++;
 	}
-	if (curr[2] <= data->coor[2] || data->coor[2] == 0)
+	if (val < data->coor[2] || data->coor[2] == -1)
 	{
-		data->coor[0] = curr[0];
-		data->coor[1] = curr[1];
-		data->coor[2] = curr[2];
+		data->coor[0] = x;
+		data->coor[1] = y;
+		data->coor[2] = val;
 	}
 }
 
@@ -49,9 +47,6 @@ static int 		check_fig_place(t_data *data, int x, int y)
 
 	block_count = 0;
 	fig_h = 0;
-	if (x + data->fsize[0] > data->msize[0] ||
-		y + data->fsize[1] > data->msize[1])
-		return (0);
 	while (fig_h < data->fsize[0])
 	{
 		fig_w = 0;
@@ -65,7 +60,9 @@ static int 		check_fig_place(t_data *data, int x, int y)
 		}
 		fig_h++;
 	}
-	return (block_count);
+	if (block_count == 1)
+		return (1);
+	return (0);
 }
 
 void 			init_coordinates(t_data *data)
@@ -74,7 +71,7 @@ void 			init_coordinates(t_data *data)
 	int 		y;
 
 	x = 0;
-	while (x < (data->msize[0]))
+	while (x < data->msize[0])
 	{
 		y = 0;
 		while (y < data->msize[1])

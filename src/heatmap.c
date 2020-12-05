@@ -95,9 +95,9 @@ void 				init_heatmap(t_data *data)
 		{
 			if (map[i][j] == '.')
 				data->hmap[i][j] = 0;
-			else if (map[i][j] == 'o')
+			else if (map[i][j] == data->player)
 				data->hmap[i][j] = ME;
-			else if (map[i][j] == 'x')
+			else if (map[i][j] == data->enemy)
 			{
 				data->hmap[i][j] = EN;
 				near_the_enemy(data, i, j);

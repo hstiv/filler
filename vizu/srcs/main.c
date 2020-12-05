@@ -1,5 +1,15 @@
 #include "vizu.h"
 
+static void 	init_param(t_mlx *mlx)
+{
+	mlx->map = NULL;
+	mlx->msize[0] = 0;
+	mlx->msize[1] = 0;
+	mlx->result[0] = 0;
+	mlx->result[0] = 0;
+	mlx->end = 0;
+}
+
 int				expose_hook(void *param)
 {
 	t_mlx		*mlx;
@@ -9,16 +19,17 @@ int				expose_hook(void *param)
 	exit(0);
 }
 
-static void			loop(t_mlx *mlx)
+static void		loop(t_mlx *mlx)
 {
 	mlx_hook(mlx->wind, 17, (1L << 17), expose_hook, mlx);
+	draw_map(mlx);
 	mlx_loop_hook(mlx->ptr, draw_map, mlx);
 	mlx_loop(mlx->ptr);
 }
 
-int 				main(void)
+int 			main(void)
 {
-	t_mlx			mlx;
+	t_mlx		mlx;
 
 	init_param(&mlx);
 	mlx.ptr = mlx_init();

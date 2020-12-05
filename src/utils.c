@@ -24,7 +24,7 @@ void 				set_data(t_data *data)
 	data->msize[1] = 0;
 	data->coor[0] = -1;
 	data->coor[1] = -1;
-	data->coor[2] = 0;
+	data->coor[2] = -1;
 	data->hmap = NULL;
 	data->enemy = 'x';
 }
@@ -46,7 +46,7 @@ void 				reload_data(t_data *data)
 	data->fig = NULL;
 	data->coor[0] = -1;
 	data->coor[1] = -1;
-	data->coor[2] = 0;
+	data->coor[2] = -1;
 	data->fsize[0] = 0;
 	data->fsize[1] = 0;
 	data->line = NULL;

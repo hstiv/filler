@@ -19,13 +19,14 @@ int 				main(void)
 	set_data(&data);
 	if (!read_player(&data))
 		throw("BAD_PLAYER\n");
-	while (1)
+	while (read_board(&data))
 	{
-		read_board(&data);
 		init_heatmap(&data);
 		handle_heatmap(&data);
 		init_coordinates(&data);
+		if (data.coor[2] == 0)
+			return (0);
 		reload_data(&data);
 	}
-	exit(0);
+	return (0);
 }

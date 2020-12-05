@@ -42,12 +42,10 @@ $(NAME):			$(OBJ)
 
 $(OBJ_PATH)%.o:		$(SRC_PATH)%.c $(INC) $(LIB_INC)
 						@mkdir -p $(OBJ_PATH)
-						@gcc -Wall -Wextra -Wextra \
-						-I $(INC_PATH) -I $(LIB_INC_PATH) -o $@ -c $<
+						@gcc -I $(INC_PATH) -I $(LIB_INC_PATH) -o $@ -c $<
 
 clean:
 						@echo "(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧ $(NAME) is deleting... Wait a sec."
-						@make -C $(LIB_PATH) fclean
 						@rm -f $(OBJ)
 						@rm -rf $(OBJ_PATH)
 
